@@ -6,6 +6,13 @@ class ProjectTask(models.Model):
     addon_name = fields.Char(string='Addon Name')
     release_id = fields.Many2one('dws.release.management', string='Release')
 
+class HelpdeskTicket(models.Model):
+    _inherit = 'helpdesk.ticket'
+    
+    addon_name = fields.Char(string='Addon Name')
+    release_id = fields.Many2one('dws.release.management', string='Release')
+
+
 class DwsReleaseManagement(models.Model):
     _name = 'dws.release.management'
     _description = 'dws release management'
@@ -22,7 +29,8 @@ class DwsReleaseManagement(models.Model):
                                  string='Deployed', required=True)
     
     release_date = fields.Date(string='Release Date', required=True)
-    release_line = fields.Many2many('project.task', 'release_id', string='Release Line')
+    release_line_tasks = fields.Many2many('project.task', 'release_id', string='Release Line Tasks')
+    release_line_tickets = fields.Many2many('helpdesk.ticket', 'name', string='Release Line Tickets')    
     customer = fields.Many2one('res.partner', string='Customer', required=True)
     tags = fields.Many2many('project.tags', string='Tags')
 

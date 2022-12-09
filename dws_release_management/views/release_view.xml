@@ -12,8 +12,6 @@
                 </xpath>
             </field>
         </record>
-
-        <!-- 	project.view_task_kanban inherit -->
         <record id="project_view_task_kanban_custom" model="ir.ui.view">
             <field name="name">project.task.kanban.addon.field</field>
             <field name="model">project.task</field>
@@ -23,8 +21,20 @@
                     <t t-if="record.release_id.value">
                         <br></br>
                         <field name="release_id"/>
-                    </t>
-                    
+                    </t>                    
+                </xpath>
+            </field>
+        </record>
+
+        
+        <record id="helpdesk_ticket_form_view_inherit" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.form.addon.field</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='email_cc']" position="after">
+                    <field name="addon_name"/>
+                    <field name="release_id"/>
                 </xpath>
             </field>
         </record>
@@ -50,16 +60,26 @@
                         </group>
 
                         <group>
-                            <field name="release_line">
+                            <field name="release_line_tasks">
                                 <tree editable="bottom">
                                     <field name="name"/>
                                     <field name="partner_id"/>
-                                    <field name="company_id"/>
+                                    <field name="company_id" optional="hide"/>
                                     <field name="addon_name"/>
                                     <field name="release_id"/>
                                 </tree>
-                            </field>
-                            
+                            </field>                            
+                        </group>
+
+                        <group>
+                            <field name="release_line_tickets">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="addon_name"/>
+                                    <field name="release_id"/>
+                                </tree>
+                            </field>                            
                         </group>
                     </sheet>
                 </form>
@@ -77,8 +97,10 @@
                     <field name="responsible"/>
                     <field name="deployed"/>                    
                     <field name="release_date"/>
-                    <field name="release_line" widget="many2many_tags"/>
-                    <field name="tags" widget="many2many_tags"/>    
+                    <field name="release_line_tasks" widget="many2many_tags" optional="hide"/>
+                    <field name="release_line_tickets" widget="many2many_tags" optional="hide"/>
+                    <field name="tags" widget="many2many_tags" optional="hide"/>                   
+                    
                 </tree>
             </field>
         </record>
@@ -92,7 +114,7 @@
                     <field name="responsible"/>
                     <field name="deployed"/>
                     <field name="release_date"/>
-                    <field name="release_line"/>
+                    <field name="release_line_tasks"/>
                     <field name="customer"/>
                     <field name="tags"/>    
                     <templates>
@@ -102,7 +124,6 @@
                                     <strong><field name="name"/></strong><br></br>
                                     <strong>Responsible: </strong><span><field name="responsible"/></span><br></br>
                                     <strong>Deployed: </strong><span><field name="deployed"/></span><br></br>
-                                    <!-- <strong><field name="release_number"/></strong><br></br> -->
                                     <strong>Release Date: </strong><span><field name="release_date"/></span><br></br>                                    
                                     <strong>Customer: </strong><span><field name="customer"/></span><br></br>
                                     <div class="oe_kanban_tags">

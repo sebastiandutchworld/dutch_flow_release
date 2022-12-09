@@ -6,7 +6,7 @@
     "author": "Dutchworld IT solutions",
     "website": "www.dutchworld.nl",
     "license": "AGPL-3",
-    "depends": ["project"],
+    "depends": ["project", "helpdesk"],
     "data": ["views/release_view.xml",
     'security/ir.model.access.csv',],
     "installable": True,
