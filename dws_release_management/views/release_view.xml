@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="project_view_project_task_form2_custom" model="ir.ui.view">
+            <field name="name">project.task.form.addon.field</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">                  
+                <xpath expr="//field[@class='o_task_customer_field']" position="after">
+                    <field name="addon_name"/>
+                    <field name="release_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 	project.view_task_kanban inherit -->
+        <record id="project_view_task_kanban_custom" model="ir.ui.view">
+            <field name="name">project.task.kanban.addon.field</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//t[@t-if='record.partner_id.value']" position="after">
+                    <t t-if="record.release_id.value">
+                        <br></br>
+                        <field name="release_id"/>
+                    </t>
+                    
+                </xpath>
+            </field>
+        </record>
+
+        <record id="dws_release_management_form_view" model="ir.ui.view">
+            <field name="name">dws.release.management.form</field>
+            <field name="model">dws.release.management</field>
+            <field name="arch" type="xml">
+                <form string="Release">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="customer"/>
+                                <field name="responsible"/>                                
+                            </group>
+                            <group>
+                                <field name="deployed"/>
+                                <field name="release_date"/>                                
+                                <field name="tags" widget="many2many_tags"/>    
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="release_line">
+                                <tree editable="bottom">
+                                    <field name="name"/>
+                                    <field name="partner_id"/>
+                                    <field name="company_id"/>
+                                    <field name="addon_name"/>
+                                    <field name="release_id"/>
+                                </tree>
+                            </field>
+                            
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="dws_release_management_tree_view" model="ir.ui.view">
+            <field name="name">dws.release.management.tree</field>
+            <field name="model">dws.release.management</field>
+            <field name="arch" type="xml">
+                <tree string="Release">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="customer"/>
+                    <field name="responsible"/>
+                    <field name="deployed"/>                    
+                    <field name="release_date"/>
+                    <field name="release_line" widget="many2many_tags"/>
+                    <field name="tags" widget="many2many_tags"/>    
+                </tree>
+            </field>
+        </record>
+
+        <record id="dws_release_management_kanban_view" model="ir.ui.view">
+            <field name="name">dws.release.management.kanban</field>
+            <field name="model">dws.release.management</field>
+            <field name="arch" type="xml">
+                <kanban string="Release">
+                    <field name="name"/>
+                    <field name="responsible"/>
+                    <field name="deployed"/>
+                    <field name="release_date"/>
+                    <field name="release_line"/>
+                    <field name="customer"/>
+                    <field name="tags"/>    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_details">
+                                    <strong><field name="name"/></strong><br></br>
+                                    <strong>Responsible: </strong><span><field name="responsible"/></span><br></br>
+                                    <strong>Deployed: </strong><span><field name="deployed"/></span><br></br>
+                                    <!-- <strong><field name="release_number"/></strong><br></br> -->
+                                    <strong>Release Date: </strong><span><field name="release_date"/></span><br></br>                                    
+                                    <strong>Customer: </strong><span><field name="customer"/></span><br></br>
+                                    <div class="oe_kanban_tags">
+                                        <field name="tags" widget="many2many_tags"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>        
+        <record id="action_release_list" model="ir.actions.act_window">
+            <field name="name">Release</field>
+            <field name="res_model">dws.release.management</field>
+            <field name="view_mode">tree,form,kanban</field>
+             <field name="help" type="html">
+                <p class="oe_view_no content_create">
+                    Click to create a new release.
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_release" 
+            name="Release"
+            parent="project.menu_main_pm" 
+            action="action_release_list" 
+            sequence="110"/>
+       
+    </data>
+</odoo>
