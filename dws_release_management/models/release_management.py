@@ -29,7 +29,7 @@ class DwsReleaseManagement(models.Model):
                                  string='Deployed', required=True)
     
     expected_release_date = fields.Date(string='Expected Release Date', required=True)
-    release_date = fields.Date(string='Expected Release Date')
+    release_date = fields.Date(string='Release Date')
     release_line_tasks = fields.Many2many('project.task', 'release_id', string='Release Line Tasks', compute='_compute_release_line_tasks')
     release_line_tickets = fields.Many2many('helpdesk.ticket', 'name', string='Release Line Tickets', compute='_compute_release_line_tickets')    
     customer = fields.Many2one('res.partner', string='Customer', required=True)
