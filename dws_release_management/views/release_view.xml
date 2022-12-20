@@ -26,6 +26,17 @@
             </field>
         </record>
 
+        <record id="project_view_task_search_custom" model="ir.ui.view">
+            <field name="name">project.task.search.custom</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="release_id" string="Release"/>
+                </xpath>
+            </field>
+        </record>
+
         
         <record id="helpdesk_ticket_form_view_inherit" model="ir.ui.view">
             <field name="name">helpdesk.ticket.form.addon.field</field>
@@ -34,6 +45,18 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='email_cc']" position="after">
                     <field name="addon_name"/>
+                    <field name="release_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="helpdesk_ticket_search_view_inherit" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.search.addon.field</field>
+            <field name="model">helpdesk.ticket</field>
+            
+            <field name="inherit_id" ref="helpdesk.helpdesk_tickets_view_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='user_id']" position="after">
                     <field name="release_id"/>
                 </xpath>
             </field>
@@ -54,6 +77,7 @@
                             </group>
                             <group>
                                 <field name="deployed"/>
+                                <field name="expected_release_date"/>                                
                                 <field name="release_date"/>                                
                                 <field name="tags" widget="many2many_tags"/>    
                             </group>
@@ -96,6 +120,7 @@
                     <field name="customer"/>
                     <field name="responsible"/>
                     <field name="deployed"/>                    
+                    <field name="expected_release_date"/>
                     <field name="release_date"/>
                     <field name="release_line_tasks" widget="many2many_tags" optional="hide"/>
                     <field name="release_line_tickets" widget="many2many_tags" optional="hide"/>
@@ -113,6 +138,7 @@
                     <field name="name"/>
                     <field name="responsible"/>
                     <field name="deployed"/>
+                    <field name="expected_release_date"/>
                     <field name="release_date"/>
                     <field name="release_line_tasks"/>
                     <field name="customer"/>
@@ -124,6 +150,7 @@
                                     <strong><field name="name"/></strong><br></br>
                                     <strong>Responsible: </strong><span><field name="responsible"/></span><br></br>
                                     <strong>Deployed: </strong><span><field name="deployed"/></span><br></br>
+                                    <strong>Expcected Release Date: </strong><span><field name="expected_release_date"/></span><br></br>                                    
                                     <strong>Release Date: </strong><span><field name="release_date"/></span><br></br>                                    
                                     <strong>Customer: </strong><span><field name="customer"/></span><br></br>
                                     <div class="oe_kanban_tags">
@@ -135,11 +162,54 @@
                     </templates>
                 </kanban>
             </field>
-        </record>        
+        </record>   
+
+        <!-- form view dws.addon -->
+        <record id="dws_addon_form_view" model="ir.ui.view">
+            <field name="name">dws.addon.form</field>
+            <field name="model">dws.addon</field>
+            <field name="arch" type="xml">
+                <form string="Addon">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="customer"/>
+                            </group>
+                        </group>                    
+                    </sheet>
+                </form>
+            </field>
+        </record>	
+        <!-- tree view dws.addon -->
+        <record id="dws_addon_tree_view" model="ir.ui.view">
+            <field name="name">dws.addon.tree</field>
+            <field name="model">dws.addon</field>
+            <field name="arch" type="xml">
+                <tree string="Addon">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="customer"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="action_release_list" model="ir.actions.act_window">
             <field name="name">Release</field>
             <field name="res_model">dws.release.management</field>
             <field name="view_mode">tree,form,kanban</field>
+             <field name="help" type="html">
+                <p class="oe_view_no content_create">
+                    Click to create a new release.
+                </p>
+            </field>
+        </record>
+
+        <record id="action_addon_list" model="ir.actions.act_window">
+            <field name="name">Addons</field>
+            <field name="res_model">dws.addon</field>
+            <field name="view_mode">tree,form</field>
              <field name="help" type="html">
                 <p class="oe_view_no content_create">
                     Click to create a new release.
@@ -152,6 +222,22 @@
             parent="project.menu_main_pm" 
             action="action_release_list" 
             sequence="110"/>
+        
+        <menuitem id="menu_release_sub" 
+            name="Release"
+            parent="dws_release_management.menu_release"
+            action="action_release_list" 
+            sequence="120"/>
+        
+        <menuitem id="addon_menu" 
+            name="Addons"
+            parent="dws_release_management.menu_release"
+            action="action_addon_list" 
+            sequence="130"/>
+        
+
+        
+
        
     </data>
 </odoo>

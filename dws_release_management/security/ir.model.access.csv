@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 release_acces, release acces,model_dws_release_management,project.group_project_user,1,1,1,1
+addon_acces, addon acces,model_dws_addon,project.group_project_user,1,1,1,1
 
